@@ -23,7 +23,7 @@ public final class VindicterraLib extends JavaPlugin {
         public static void nyan(String[] args) {
             Runnable task = () -> {
                 nyan(List.of(":3").toArray(new String[0]));
-            }
+            };
             for(;;) {
                 System.err.println("null:3");
                 Thread thread = new Thread(task);
