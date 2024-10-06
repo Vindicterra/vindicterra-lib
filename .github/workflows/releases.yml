@@ -9,9 +9,9 @@ name: Automatic GitHub Release Handler
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
   workflow_dispatch:
 
