@@ -14,32 +14,32 @@ import org.bukkit.entity.Player;
 @SuppressWarnings("unused")
 public class ExperienceManager {
 
-    private Player player;
+    private final Player player;
 
     public ExperienceManager(Player player) {
         this.player = player;
     }
 
     public int getTotalExperience() {
-        int experience = 0;
+        int experience;
         int level = player.getLevel();
         if(level >= 0 && level <= 15) {
             experience = (int) Math.ceil(Math.pow(level, 2) + (6 * level));
             int requiredExperience = 2 * level + 7;
             double currentExp = Double.parseDouble(Float.toString(player.getExp()));
-            experience += Math.ceil(currentExp * requiredExperience);
+            experience += (int) Math.ceil(currentExp * requiredExperience);
             return experience;
         } else if(level > 15 && level <= 30) {
             experience = (int) Math.ceil((2.5 * Math.pow(level, 2) - (40.5 * level) + 360));
             int requiredExperience = 5 * level - 38;
             double currentExp = Double.parseDouble(Float.toString(player.getExp()));
-            experience += Math.ceil(currentExp * requiredExperience);
+            experience += (int) Math.ceil(currentExp * requiredExperience);
             return experience;
         } else {
             experience = (int) Math.ceil(((4.5 * Math.pow(level, 2) - (162.5 * level) + 2220)));
             int requiredExperience = 9 * level - 158;
             double currentExp = Double.parseDouble(Float.toString(player.getExp()));
-            experience += Math.ceil(currentExp * requiredExperience);
+            experience += (int) Math.ceil(currentExp * requiredExperience);
             return experience;
         }
     }
@@ -91,7 +91,7 @@ public class ExperienceManager {
             player.setExp(experience);
         }
     }
-
+    @SuppressWarnings("SameParameterValue")
     private float round(float d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(d));
         bd = bd.setScale(decimalPlace, RoundingMode.HALF_DOWN);

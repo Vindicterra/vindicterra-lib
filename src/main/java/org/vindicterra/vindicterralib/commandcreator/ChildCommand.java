@@ -28,6 +28,7 @@ import java.util.List;
  * @see CommandData Uses an annotation to define the command
  */
 @Getter
+@SuppressWarnings("unused")
 public abstract class ChildCommand {
     private final Plugin plugin;
     private final CommandData data;

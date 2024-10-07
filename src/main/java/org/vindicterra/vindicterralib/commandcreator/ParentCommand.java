@@ -14,6 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
  *     usage = "{@literal <param1>} {@literal <param2|param3>} [optional param]",<br>
  *     requiredArgs = 2)
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "deprecation"})
 @Getter
 public abstract class ParentCommand extends Command implements TabExecutor {
 
@@ -66,7 +67,7 @@ public abstract class ParentCommand extends Command implements TabExecutor {
      * @return true if the command was executed successfully
      */
     @Override
-    public boolean execute(CommandSender sender, String label, String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String label, String[] args) {
         if(!enabled && !sender.isOp()) {
             sender.sendMessage("§cThis command is currently disabled.");
             return true;
@@ -104,7 +105,7 @@ public abstract class ParentCommand extends Command implements TabExecutor {
                         return true;
                     }
 
-                    page = Integer.valueOf(args[1]);
+                    page = Integer.parseInt(args[1]);
                 }
 
                 sendUsage(sender, label, page);
@@ -113,7 +114,6 @@ public abstract class ParentCommand extends Command implements TabExecutor {
         }
 
         run(sender, label, args);
-        //VindicterraFactions.getInstance().getFactionHandler().save(true);
         return true;
     }
 
