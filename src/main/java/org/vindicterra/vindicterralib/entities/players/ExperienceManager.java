@@ -9,7 +9,6 @@ plugin please link to this gist publicly so that others can contribute and benef
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
 
 import org.bukkit.entity.Player;
 
