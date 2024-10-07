@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import org.bukkit.entity.Player;
-
+@SuppressWarnings("unused")
 public class ExperienceManager {
 
     private Player player;

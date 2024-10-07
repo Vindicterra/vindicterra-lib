@@ -13,7 +13,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Constructor;
@@ -37,6 +36,7 @@ import java.util.stream.Collectors;
  *     usage = "{@literal <param1>} {@literal <param2|param3>} [optional param]",<br>
  *     requiredArgs = 2)
  */
+@SuppressWarnings("unused")
 @Getter
 public abstract class ParentCommand extends Command implements TabExecutor {
 

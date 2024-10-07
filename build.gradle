@@ -6,7 +6,7 @@ plugins {
 group = 'org.vindicterra'
 version = '0.0.0-dev'
 
-publishing {
+/*publishing {
     publications {
         pluginPublication(MavenPublication) {
             artifactId = 'vindicterra-lib'
@@ -23,7 +23,7 @@ publishing {
             }
         }
     }
-}
+}*/
 
 repositories {
     mavenCentral()

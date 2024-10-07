@@ -10,6 +10,7 @@ import java.io.IOException;
 /**
  * Utility for serializing an Object into a Player's PDC
  */
+@SuppressWarnings("unused")
 public class SerializeToPDC {
     /**
      *

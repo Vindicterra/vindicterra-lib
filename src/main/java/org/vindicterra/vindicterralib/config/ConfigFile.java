@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 @Getter
+@SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
 public class ConfigFile extends YamlConfiguration {
 
     @SuppressWarnings("CanBeFinal")
@@ -21,6 +22,7 @@ public class ConfigFile extends YamlConfiguration {
         this.file = new File(plugin.getDataFolder(), name + ".yml");
 
         if(!file.exists()) {
+
             file.getParentFile().mkdirs();
             plugin.saveResource(name + ".yml", false);
         }
