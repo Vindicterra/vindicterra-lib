@@ -2,8 +2,6 @@ package org.vindicterra.vindicterralib;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.List;
-
 public final class VindicterraLib extends JavaPlugin {
 
     @Override
