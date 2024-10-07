@@ -33,10 +33,11 @@ public class SerializeToPDC {
      * @param pdc The PersistentDataContainer to deserialize from
      * @param key The NamespacedKey to deserialize from
      * @throws RuntimeException if the serializer raises IOException - see serialization.SerializeToBytes
-     * @return `null` if the object was unable to be deserialized. Otherwise, the Object
+     * @return `null` if the object was unable to be deserialized or the location in PDC was null. Otherwise, the Object
      */
     public static @Nullable Object deserialize(PersistentDataContainer pdc, NamespacedKey key) {
         byte[] bytes = pdc.get(key, PersistentDataType.BYTE_ARRAY);
+        if (bytes == null) return null;
         try {
             return SerializeToBytes.deserialize(bytes);
         } catch (IOException e) {
