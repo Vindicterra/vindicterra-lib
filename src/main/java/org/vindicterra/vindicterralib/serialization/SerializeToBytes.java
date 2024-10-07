@@ -1,4 +1,4 @@
-package org.vindicterra.vindicterraLib.serialization;
+package org.vindicterra.vindicterralib.serialization;
 
 import java.io.*;
 

@@ -1,4 +1,4 @@
-package org.vindicterra.vindicterraLib.entities.players;
+package org.vindicterra.vindicterralib.entities.players;
 /*
 AUTHOR: Dev_Richard (https://www.spigotmc.org/members/dev_richard.38792/)
 DESC: A simple and easy to use class that can get and set a player's total experience points.

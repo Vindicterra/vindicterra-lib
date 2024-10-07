@@ -1,4 +1,4 @@
-package org.vindicterra.vindicterraLib.serialization;
+package org.vindicterra.vindicterralib.serialization;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataContainer;

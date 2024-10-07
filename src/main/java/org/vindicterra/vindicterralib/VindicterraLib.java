@@ -1,4 +1,4 @@
-package org.vindicterra.vindicterraLib;
+package org.vindicterra.vindicterralib;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
