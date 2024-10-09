@@ -26,7 +26,7 @@ public class ItemBuilder {
      * param name the name of the item
      */
     public ItemBuilder withName(String name) {
-        this.meta.setDisplayName(StringUtil.formatHex(name));
+        this.meta.setDisplayName(StringUtils.formatHex(name));
         return this;
     }
     /**
@@ -41,7 +41,7 @@ public class ItemBuilder {
      */
     public ItemBuilder withLoreLine(String loreLine) {
         List<String> lore = this.meta.hasLore() ? this.meta.getLore() : new ArrayList<>();
-        lore.add(StringUtil.formatHex(loreLine));
+        lore.add(StringUtils.formatHex(loreLine));
         this.meta.setLore(lore);
         return this;
     }
@@ -52,7 +52,7 @@ public class ItemBuilder {
     public ItemBuilder withLore(String... loreLine) {
         List<String> lore = this.meta.hasLore() ? this.meta.getLore() : new ArrayList<>();
         for(String line : loreLine) {
-            lore.add(StringUtil.formatHex(line));
+            lore.add(StringUtils.formatHex(line));
         }
 
         this.meta.setLore(lore);
