@@ -3,7 +3,7 @@ package org.vindicterra.vindicterralib.items;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.vindicterra.vindicterralib.StringUtil;
+import org.vindicterra.vindicterralib.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

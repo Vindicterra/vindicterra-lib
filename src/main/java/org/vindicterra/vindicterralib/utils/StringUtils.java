@@ -1,4 +1,4 @@
-package org.vindicterra.vindicterralib;
+package org.vindicterra.vindicterralib.utils;
 
 
 import net.kyori.adventure.text.Component;
@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("ALL")
-public class StringUtil {
+public class StringUtils {
 
 
     public static final Pattern PATTERN = Pattern.compile("\\p{Alnum}+");
