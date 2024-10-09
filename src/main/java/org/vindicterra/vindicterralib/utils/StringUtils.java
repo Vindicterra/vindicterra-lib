@@ -10,7 +10,9 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+/**
+ * a utility class for string checking and manipulation
+ */
 @SuppressWarnings("ALL")
 public class StringUtils {
 
@@ -19,10 +21,19 @@ public class StringUtils {
     private static final List<String> FILTER = List.of("nigger", "nigga", "faggot", "whore", "cock", "cunt", "dick", "monkey", "tranny", "dike", "chink", "coon", "troon", "fag");
     private static final Pattern HEX_PATTERN = Pattern.compile("&#[a-fA-F0-9]{6}");
 
+    /**
+     * checks if the string is alphanumaric
+     * @param message the string to ckeck
+     */
     public static boolean isAlphanumeric(String message) {
         return PATTERN.matcher(message).matches();
     }
 
+    /**
+     *
+     * @param message
+     * @return returns a string with the color codes
+     */
     public static String formatHex(String message) {
         Matcher match = HEX_PATTERN.matcher(message);
         while(match.find()) {
@@ -33,6 +44,11 @@ public class StringUtils {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
+    /**
+     * check is the string contains slurs and other bad words
+     * @param message
+     * @return
+     */
     public static boolean isFiltered(String message) {
         String fixedMessage = message.toLowerCase()
                 .replace("@", "a")

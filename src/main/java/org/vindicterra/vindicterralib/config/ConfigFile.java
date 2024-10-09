@@ -9,6 +9,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * A class that represents a configuration file.
+ * there is a built in load, save, and reload method.
+ * but this is for files other than config.yml
+ */
 @Getter
 @SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
 public class ConfigFile extends YamlConfiguration {
