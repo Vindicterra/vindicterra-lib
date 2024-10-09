@@ -5,7 +5,7 @@ import java.io.*;
 /**
  * Generic implementation of Java object serialization.
  * Objects to be serialized must implement the "java.io.Serializable" interface.
- * For a higher-level PDC serializer, check vindicterraLib.serialization.SerializeToPDC
+ * For a higher-level PDC serializer, check {@link SerializeToPDC}
  */
 public class SerializeToBytes {
     /**
