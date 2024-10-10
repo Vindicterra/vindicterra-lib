@@ -36,8 +36,9 @@ import java.util.stream.Collectors;
  *     playerOnly = true,<br>
  *     usage = "{@literal <param1>} {@literal <param2|param3>} [optional param]",<br>
  *     requiredArgs = 2)<br>
- *     public class exampleCommand extends ParentCommand {
- *
+ *     public class exampleCommand extends ParentCommand {<br>
+ *     @see ChildCommand
+ *     @see CommandData
  */
 @SuppressWarnings({"unused", "deprecation"})
 @Getter

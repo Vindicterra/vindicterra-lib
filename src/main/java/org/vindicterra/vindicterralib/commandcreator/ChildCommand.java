@@ -24,9 +24,9 @@ import java.util.List;
  *     playerOnly = true,<br>
  *     usage = "{@literal <param1>} {@literal <param2|param3>} [optional param]",<br>
  *     requiredArgs = 2)<br>
- *     public class ExampleChildCommand extends ChildCommand {
+ *     public class ExampleChildCommand extends ChildCommand {<br>
  * @see ParentCommand
- * @see CommandData Uses an annotation to define the command
+ * @see CommandData
  */
 @Getter
 @SuppressWarnings("unused")
