@@ -6,7 +6,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.vindicterra.vindicterralib.StringUtil;
+import org.vindicterra.vindicterralib.utils.StringUtils;
 
 @Getter
 public class Cooldown extends BukkitRunnable {
@@ -55,7 +55,7 @@ public class Cooldown extends BukkitRunnable {
      */
     public void sendOffCooldownMessage() {
         sendActionBar(Component.text(
-            "You are no longer on cooldown for " + StringUtil.format(reason) + "!",
+            "You are no longer on cooldown for " + StringUtils.format(reason) + "!",
             NamedTextColor.GREEN)
         );
     }
