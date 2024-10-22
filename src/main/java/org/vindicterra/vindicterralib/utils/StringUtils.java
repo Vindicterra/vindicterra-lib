@@ -175,7 +175,7 @@ public class StringUtils {
      * @param input Input to format
      * @return Formatted string
      */
-    public static String format(final String input) {
+    public static String toFriendlyFormat(final String input) {
         StringBuilder builder = new StringBuilder();
         for (String s : input.split("_")) {
             builder.append(s.substring(0, 1).toUpperCase())
@@ -191,7 +191,7 @@ public class StringUtils {
      * @param input Input to deformat
      * @return Deformatted String
      */
-    public static String deformat(final String input) {
+    public static String toBukkitFormat(final String input) {
         return ((TextComponent) Component.text(input.toUpperCase()
             .replace(" ", "_")).compact()).content();
     }

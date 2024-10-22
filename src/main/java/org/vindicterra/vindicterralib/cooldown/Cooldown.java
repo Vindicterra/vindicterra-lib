@@ -55,7 +55,7 @@ public class Cooldown extends BukkitRunnable {
      */
     public void sendOffCooldownMessage() {
         sendActionBar(Component.text(
-            "You are no longer on cooldown for " + StringUtils.format(reason) + "!",
+            "You are no longer on cooldown for " + StringUtils.toFriendlyFormat(reason) + "!",
             NamedTextColor.GREEN)
         );
     }
