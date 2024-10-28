@@ -23,8 +23,8 @@ public class CooldownManager {
     public static CooldownStatus handleCooldown(Player player, @Nullable Event event, int seconds, String reason, boolean showMessage) {
         UUID uuid = player.getUniqueId();
         
-        if (player.hasPermission("vindicterraweapons.admin.cooldown-bypass")) {
-            return CooldownStatus.OFF_COOLDOWN;
+        if (player.hasPermission("vindicterralib.admin.cooldown-bypass")) {
+            return CooldownStatus.NEW_COOLDOWN;
         }
         
         Cooldown pCooldown = getCooldown(player, reason);
@@ -32,9 +32,11 @@ public class CooldownManager {
             long timeLeft = pCooldown.getTimeLeft();
             if (timeLeft > 0) {
                 pCooldown.sendOnCooldownMessage();
+                /*
                 if (event instanceof Cancellable) {
                     ((Cancellable) event).setCancelled(true);
                 }
+                 */
                 return CooldownStatus.ON_COOLDOWN;
             } else {
                 pCooldown.remove();
@@ -68,7 +70,8 @@ public class CooldownManager {
      * @return Possibly-null active cooldown associated with player
      */
     public static @Nullable Cooldown getCooldown(Player player, String reason) {
-        for (Cooldown cd : getCooldowns(player)) {
+        List<Cooldown> pCooldowns = getCooldowns(player);
+        for (Cooldown cd : pCooldowns) {
             if (!cd.getReason().equals(reason)) continue;
             return cd;
         }
