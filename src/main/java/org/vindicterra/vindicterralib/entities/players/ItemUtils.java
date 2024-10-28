@@ -10,13 +10,16 @@ public class ItemUtils {
      * @param player Player to remove item from
      * @param material Bukkit material of item being removed
      * @param amount Amount of item to be removed
+     *
+     * @return True if item was successfully removed, otherwise false
      */
-    public static void removeItem(Player player, Material material, int amount) {
+    public static boolean removeItem(Player player, Material material, int amount) {
         int index = player.getInventory().first(material);
-        if (index == -1) return;
+        if (index == -1) return false;
         ItemStack first = player.getInventory().getItem(index);
-        if (first == null) return;
+        if (first == null) return false;
         first.setAmount(first.getAmount() - amount);
         player.getInventory().setItem(index, first);
+        return true;
     }
 }
