@@ -13,7 +13,6 @@ import java.math.RoundingMode;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -169,24 +168,31 @@ public class StringUtils {
         return decimal.doubleValue();
     }
 
-    //what is this for? is it really necessary to have it in lib?
+    // what is this for? is it really necessary to have it in lib?
     /**
-     * @param name Item name to format
-     * @return Formatted item name in the style of "Grass Block"
+     * Formats the given input into a readable format (Ex. Grass Block)
+     *
+     * @param input Input to format
+     * @return Formatted string
      */
-    public static String format(final String name) {
-        StringBuilder output = new StringBuilder();
-        for (String character : name.split("_")) {
-            output.append(character.substring(0, 1).toUpperCase()).append(character.substring(1).toLowerCase()).append(" ");
+    public static String toFriendlyFormat(final String input) {
+        StringBuilder builder = new StringBuilder();
+        for (String s : input.split("_")) {
+            builder.append(s.substring(0, 1).toUpperCase())
+                .append(s.substring(1).toLowerCase())
+                .append(" ");
         }
-        return output.substring(0, output.length() - 1);
+        return builder.toString();
     }
     
     /**
-     * @param name Name to remove formatting from
-     * @return Unformatted name in the style of "GRASS_BLOCK"
+     * Deformats a string into Bukkit material formatting (Ex. GRASS_BLOCK)
+     *
+     * @param input Input to deformat
+     * @return Deformatted String
      */
-    public static String deformat(final String name) {
-        return ((TextComponent) Component.text(name.toUpperCase().replace(" ", "_")).compact()).content();
+    public static String toBukkitFormat(final String input) {
+        return ((TextComponent) Component.text(input.toUpperCase()
+            .replace(" ", "_")).compact()).content();
     }
 }

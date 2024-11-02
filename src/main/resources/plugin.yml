@@ -4,3 +4,9 @@ main: org.vindicterra.vindicterralib.VindicterraLib
 api-version: '1.20'
 load: STARTUP
 description: Vindicterra Standard Library
+permissions:
+  vindicterralib.admin:
+    default: op
+    description: Allows you to access admin commands or features
+    children:
+      - vindicterralib.admin.cooldown-bypass
