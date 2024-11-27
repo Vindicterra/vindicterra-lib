@@ -1,7 +1,6 @@
 package org.vindicterra.vindicterralib.cooldown;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.vindicterra.vindicterralib.VindicterraLib;
 

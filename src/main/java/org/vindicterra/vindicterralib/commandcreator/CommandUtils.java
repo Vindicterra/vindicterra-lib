@@ -25,7 +25,7 @@ public class CommandUtils {
         for (Component component : subCommands) {
             header = header.append(component).appendNewline();
         }
-        return header.append(Component.text(
+        return header.appendNewline().append(Component.text(
             "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-", NamedTextColor.GOLD));
     }
 }
