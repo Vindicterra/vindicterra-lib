@@ -4,26 +4,30 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.vindicterra.vindicterralib.items.ItemRemoveResult;
 
 public class ItemUtils {
     /**
      * Removes the specified amount of Bukkit material from the player's inventory
-     * @param player Player to remove item from
-     * @param material Bukkit material of item being removed
+     * @param player Not-null Player to remove item from
+     * @param material Not-null Bukkit material of item being removed
      * @param amount Amount of item to be removed
      *
      * @return True if item was successfully removed, otherwise false
      */
-    public static boolean removeItem(Player player, Material material, int amount, boolean checkGamemode) {
+    public static ItemRemoveResult removeItem(@NotNull Player player, @NotNull Material material, int amount, boolean checkGamemode) {
         if (checkGamemode && player.getGameMode().equals(GameMode.CREATIVE)) {
-            return false;
+            return ItemRemoveResult.SUCCESS;
         }
-        int index = player.getInventory().first(material);
-        if (index == -1) return false;
-        ItemStack first = player.getInventory().getItem(index);
-        if (first == null) return false;
-        first.setAmount(first.getAmount() - amount);
-        player.getInventory().setItem(index, first);
-        return true;
+        if (!player.getInventory().contains(material)) {
+            return ItemRemoveResult.FAIL;
+        }
+        if (!player.getInventory().contains(material, amount)) {
+            return ItemRemoveResult.INVALID_AMOUNT;
+        }
+        
+        player.getInventory().removeItem(new ItemStack(material, amount));
+        return ItemRemoveResult.SUCCESS;
     }
 }
