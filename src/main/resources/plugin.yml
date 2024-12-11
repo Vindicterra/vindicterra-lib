@@ -1,5 +1,5 @@
 name: VindicterraLib
-version: '0.0.0-testing'
+version: '$version'
 main: org.vindicterra.vindicterralib.VindicterraLib
 api-version: '1.20'
 load: STARTUP
