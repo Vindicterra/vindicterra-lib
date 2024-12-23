@@ -1,5 +1,6 @@
 package org.vindicterra.vindicterralib.entities.players;
 
+import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -44,14 +45,58 @@ public class ItemUtils {
         if (checkGamemode && player.getGameMode().equals(GameMode.CREATIVE)) {
             return ItemRemoveResult.SUCCESS;
         }
-        if (!player.getInventory().contains(item.getType())) {
+        
+        boolean match = false;
+        int total = 0;
+        for (ItemStack invItem : player.getInventory().getStorageContents()) {
+            if (invItem == null) continue;
+            if (!invItem.isSimilar(item)) continue;
+            match = true;
+            total += invItem.getAmount();
+        }
+        
+        if (!match) {
             return ItemRemoveResult.FAIL;
         }
-        if (!player.getInventory().containsAtLeast(item, item.getAmount())) {
+        
+        if (total < item.getAmount()) {
             return ItemRemoveResult.INVALID_AMOUNT;
         }
         
         player.getInventory().removeItem(item);
+        return ItemRemoveResult.SUCCESS;
+    }
+    
+    public static ItemRemoveResult removeCustomItem(@NotNull Player player, @NotNull ItemStack item, boolean checkGamemode) {
+        if (checkGamemode && player.getGameMode().equals(GameMode.CREATIVE)) {
+            return ItemRemoveResult.SUCCESS;
+        }
+        
+        CustomStack stack = CustomStack.byItemStack(item);
+        if (stack == null) return ItemRemoveResult.FAIL;
+        
+        boolean match = false;
+        int total = 0;
+        for (ItemStack invItem : player.getInventory().getStorageContents()) {
+            if (invItem == null) continue;
+            
+            CustomStack invCStack = CustomStack.byItemStack(invItem);
+            if (invCStack == null) continue;
+            
+            if (!invCStack.getNamespacedID().equalsIgnoreCase(stack.getNamespacedID())) continue;
+            
+            match = true;
+            total += invItem.getAmount();
+        }
+        
+        if (!match) {
+            return ItemRemoveResult.FAIL;
+        }
+        if (total < stack.getItemStack().getAmount()) {
+            return ItemRemoveResult.INVALID_AMOUNT;
+        }
+        
+        player.getInventory().removeItem(stack.getItemStack());
         return ItemRemoveResult.SUCCESS;
     }
 }
