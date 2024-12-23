@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.vindicterra'
-version = '0.0.1-dev'
+version = '0.1.0-dev'
 
 publishing {
     publications {
@@ -39,11 +39,15 @@ repositories {
     maven {
         url 'https://repo.xenondevs.xyz/releases'
     }
+    maven {
+        url 'https://jitpack.io/'
+    }
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
     compileOnly 'org.projectlombok:lombok:1.18.28'
+    compileOnly "com.github.LoneDev6:API-ItemsAdder:3.6.3-beta-14"
 
     implementation 'org.apache.commons:commons-lang3:3.8.1'
     implementation 'commons-lang:commons-lang:2.4'
