@@ -97,4 +97,64 @@ public class ExperienceManager {
         bd = bd.setScale(decimalPlace, RoundingMode.HALF_DOWN);
         return bd.floatValue();
     }
+
+    /**
+     * Gets the amount of experience in <code>level</code>
+     * <br>
+     * Will return 0 when given an invalid (<=0) level
+     * @param level the level you want the experience of
+     * @return the amount of experience in that level
+     */
+    public static int getExperienceInLevel(int level) {
+        // Get the exp of the current level, not the one after it.
+        level -= 1;
+        if (level >= 0 && level <= 15) {
+            return (2 * level) + 7;
+        } else if (level > 15 && level <= 30) {
+            return (5 * level) - 38;
+        } else if (level > 0){ // Catch for passing negative value
+            return (9 * level) - 158;
+        } else { // Value is negative, return zero.
+            return 0;
+        }
+        /**TEST
+         *  assert getExperienceInLevel(1) == 7;
+         *  assert getExperienceInLevel(30) == 107;
+         *  assert getExperienceInLevel(-1) == 0;
+         */
+    }
+
+    /**
+     * Gets the amount of experience in <code>levels - player's current level</code>
+     * <br>
+     * This method has an O(n) time complexity.
+     * <br>
+     * If you want the total experience of the player, use getTotalExperience()
+     * <br>
+     * <br>
+     * I.e. Player has 30 levels and an additional 5 experience points.
+     * <br>
+     * This method is called with an argument of 2.
+     * <br>
+     * Returns the exp in level 30 + level 29 (107 + 102)
+     * @param levels The number of levels to get the total experience of
+     * @return The experience in the sum of <code>levels</code>
+     */
+    public int getExperienceInLevels(int levels) {
+        // Kinda scuffed that this all works as normal
+        int sum = 0;
+        for (int i = this.player.getLevel(); i > this.player.getLevel() - levels; i--){
+            sum += getExperienceInLevel(i);
+        }
+        return sum;
+        /**TEST
+         * // Not sure how to test this, since a player is required to instantiate ExperienceManager
+         * // Assume player has 30 levels for the sake of getting this onto paper
+         * assert getExperienceInLevels(1) == (107);
+         * assert getExperienceInLevels(3) == (107 + 102 + 97);
+         * assert getExperienceInLevels(39) == 1395; // Sum of levels 0-30, going over player exp is handled gracefully.
+         * assert getExperienceInLevels(-1) == 0;
+         * assert getExperienceInLevels(0) == 0;
+         */
+    }
 }
