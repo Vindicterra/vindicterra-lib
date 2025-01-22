@@ -38,9 +38,8 @@ public class ExperienceManager {
         experience +=
                 // Multiply level progress by level total to get current exp
                 progress.multiply( BigDecimal.valueOf(neededExp) )
-                // TODO check how we should be rounding
                 // Round out any decimals
-                .setScale(0, RoundingMode.HALF_DOWN)
+                .setScale(0, RoundingMode.HALF_UP)
                 // Convert to an int for summation
                 .intValue();
         return experience;
@@ -176,7 +175,7 @@ public class ExperienceManager {
             levels = BigDecimal.valueOf(xp + 9)
                     .sqrt(mc)
                     .subtract( BigDecimal.valueOf(3))
-                    .setScale(0, RoundingMode.FLOOR)
+                    .setScale(0, RoundingMode.HALF_UP)
                     .intValue();
         // Oh my god this is a shitshow
         } else if(xp >= 353 && xp <= 1507) {
@@ -192,7 +191,7 @@ public class ExperienceManager {
                     .add(
                             BigDecimal.valueOf(81)
                             .divide(BigDecimal.valueOf(10), mc) )
-                    .setScale(0, RoundingMode.FLOOR)
+                    .setScale(0, RoundingMode.HALF_UP)
                     .intValue();
         // I hate doing complex math in this godforsaken language
         } else {
@@ -208,7 +207,7 @@ public class ExperienceManager {
                     .add(
                             BigDecimal.valueOf(325)
                                     .divide(BigDecimal.valueOf(18), mc) )
-                    .setScale(0, RoundingMode.FLOOR)
+                    .setScale(0, RoundingMode.HALF_UP)
                     .intValue();
         }
 
@@ -231,6 +230,9 @@ public class ExperienceManager {
         return getExpOfLevel(level);
     }
 
+    /**
+     * Deprecated compatibility method.  Use {@link #getExpOfTopLevels(int)} instead
+     */
     @Deprecated
     public int getExperienceInLevels(int levels){
         return getExpOfTopLevels(levels);
@@ -267,18 +269,17 @@ public class ExperienceManager {
      * @param level the level you want the total exp of
      * @return the amount of experience needed to get to that level
      */
+    // Yes, this uses some double math; BUT, I've manually tested it with levels 0-60 and it hasn't had any trouble
     public static int getExpOfLevels(int level) {
         if (level >= 0 && level <= 16) {
             // level^2 + 6*level
             return (level * level) + (6 * level);
         } else if (level >= 17 && level <= 31) {
             // 2.5 * level^2 - 40.5 * level + 360
-            // TODO double math
             return (int) (Math.ceil(2.5 * (level * level) ) - (40.5 * level) + 360);
         } else if (level > 0) { // Catch negative values
             // 4.5 * level^2 - 162.5 * level + 2200
-            // TODO more double math
-            return (int) (Math.ceil(4.5 * (level * level) ) - (162.5 * level) + 2200);
+            return (int) (Math.ceil(4.5 * (level * level) ) - (162.5 * level) + 2220);
         } else return 0; // Value is invalid, return zero.
         /**TEST
          *  assert getExpOfLevels(1) == 7;
