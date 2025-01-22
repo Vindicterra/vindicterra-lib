@@ -20,7 +20,10 @@ public class ExperienceManager {
         this.player = player;
     }
 
-    // TODO change method signature
+    /**
+     * Gets the total experience points of the Player
+     * @return the player's total experience
+     */
     public int getTotalExperience() {
         int level = player.getLevel();
 
@@ -28,10 +31,10 @@ public class ExperienceManager {
             getExperienceInLevels should be kept, but another helper getTotal method should be made public
         */
         // Get the amount of experience in all the player's levels
-        int experience = getExperienceInLevels(level);
+        int experience = getExpOfTopLevels(level);
 
         // Get the amount of exp needed for the next level
-        int neededExp = getExperienceInLevel(level + 1);
+        int neededExp = getExpOfLevel(level + 1);
         // getExp returns a range of 0-1 of player's progress to the next level
         var progress = BigDecimal.valueOf(player.getExp());
         experience +=
@@ -131,32 +134,32 @@ public class ExperienceManager {
      * @param level the level you want the experience of
      * @return the amount of experience in that level
      */
-    public static int getExperienceInLevel(int level) {
+    public static int getExpOfLevel(int level) {
         // Get the exp of the current level, not the one after it.
         level -= 1;
         if (level >= 0 && level <= 15) {
             return (2 * level) + 7;
         } else if (level > 15 && level <= 30) {
             return (5 * level) - 38;
-        } else if (level > 0){ // Catch for passing negative value
+        } else if (level > 0){ // Catch for negative values
             return (9 * level) - 158;
         } else { // Value is negative, return zero.
             return 0;
         }
         /**TEST
-         *  assert getExperienceInLevel(1) == 7;
-         *  assert getExperienceInLevel(30) == 107;
-         *  assert getExperienceInLevel(0) == 0;
-         *  assert getExperienceInLevel(-1) == 0;
+         *  assert getExpOfLevel(1) == 7;
+         *  assert getExpOfLevel(30) == 107;
+         *  assert getExpOfLevel(0) == 0;
+         *  assert getExpOfLevel(-1) == 0;
          */
     }
 
     /**
-     * Gets the amount of experience in <code>levels - player's current level</code>
+     * Gets the total experience of the player's top <code>levels</code> levels
      * <br>
      * This method has an O(n) time complexity.
      * <br>
-     * If you want the total experience of the player, use getTotalExperience()
+     * If you want the total experience of the player, use {@link #getTotalExperience()}
      * <br>
      * <br>
      * I.e. Player has 30 levels and an additional 5 experience points.
@@ -167,21 +170,21 @@ public class ExperienceManager {
      * @param levels The number of levels to get the total experience of
      * @return The experience in the sum of <code>levels</code>
      */
-    public int getExperienceInLevels(int levels) {
+    public int getExpOfTopLevels(int levels) {
         // Kinda scuffed that this all works as normal
         int sum = 0;
         for (int i = this.player.getLevel(); i > this.player.getLevel() - levels; i--){
-            sum += getExperienceInLevel(i);
+            sum += getExpOfLevel(i);
         }
         return sum;
         /**TEST
          * // Not sure how to test this, since a player is required to instantiate ExperienceManager
          * // Assume player has 30 levels for the sake of getting this onto paper
-         * assert getExperienceInLevels(1) == (107);
-         * assert getExperienceInLevels(3) == (107 + 102 + 97);
-         * assert getExperienceInLevels(39) == 1395; // Sum of levels 0-30, going over player exp is handled gracefully.
-         * assert getExperienceInLevels(-1) == 0;
-         * assert getExperienceInLevels(0) == 0;
+         * assert getExpOfTopLevels(1) == (107);
+         * assert getExpOfTopLevels(3) == (107 + 102 + 97);
+         * assert getExpOfTopLevels(39) == 1395; // Sum of levels 0-30, going over player exp is handled gracefully.
+         * assert getExpOfTopLevels(-1) == 0;
+         * assert getExpOfTopLevels(0) == 0;
          */
     }
 }
