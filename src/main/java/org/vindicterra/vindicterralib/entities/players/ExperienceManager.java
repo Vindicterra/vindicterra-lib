@@ -168,7 +168,7 @@ public class ExperienceManager {
      * @param xp the exp value to work off of
      * @return A PlayerExp object with API-ready data
      */
-    public PlayerExp convertExp(int xp) {
+    public static PlayerExp convertExp(int xp) {
         int levels;
         if(xp >= 0 && xp <= 352) {
 
@@ -178,16 +178,45 @@ public class ExperienceManager {
                     .subtract( BigDecimal.valueOf(3))
                     .setScale(0, RoundingMode.FLOOR)
                     .intValue();
-
-        // TODO implement logic for higher exp levels
+        // Oh my god this is a shitshow
         } else if(xp >= 353 && xp <= 1507) {
-            levels = 0;
+            // 81/10 + sqrt(2/5*(xp - 7839/40))
+            levels = BigDecimal.valueOf(xp)
+                    .subtract(
+                            BigDecimal.valueOf(7839)
+                            .divide(BigDecimal.valueOf(40), mc) )
+                    .multiply(
+                            BigDecimal.valueOf(2)
+                            .divide(BigDecimal.valueOf(5), mc) )
+                    .sqrt(mc)
+                    .add(
+                            BigDecimal.valueOf(81)
+                            .divide(BigDecimal.valueOf(10), mc) )
+                    .setScale(0, RoundingMode.FLOOR)
+                    .intValue();
+        // I hate doing complex math in this godforsaken language
         } else {
-            levels = 0;
+            // 325/18 + sqrt(2/9*(xp - 54215/72)
+            levels = BigDecimal.valueOf(xp)
+                    .subtract(
+                            BigDecimal.valueOf(54215)
+                                    .divide(BigDecimal.valueOf(72), mc) )
+                    .multiply(
+                            BigDecimal.valueOf(2)
+                                    .divide(BigDecimal.valueOf(9), mc) )
+                    .sqrt(mc)
+                    .add(
+                            BigDecimal.valueOf(325)
+                                    .divide(BigDecimal.valueOf(18), mc) )
+                    .setScale(0, RoundingMode.FLOOR)
+                    .intValue();
         }
 
+        // Get leftover exp points
         int remainder = xp - getExpOfLevels(levels);
+        // Get exp needed for the next level
         int neededExp = getExpOfLevel(levels + 1);
+        // Calculate 0-1 range to next level
         float progress = BigDecimal.valueOf(remainder)
                 .divide( BigDecimal.valueOf(neededExp), mc)
                 .floatValue();
@@ -203,7 +232,7 @@ public class ExperienceManager {
     }
 
     @Deprecated
-    public  int getExperienceInLevels(int levels){
+    public int getExperienceInLevels(int levels){
         return getExpOfTopLevels(levels);
     }
 
