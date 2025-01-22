@@ -20,7 +20,33 @@ public class ExperienceManager {
         this.player = player;
     }
 
+    // TODO change method signature
     public int getTotalExperience() {
+        int level = player.getLevel();
+
+        /* TODO this can be done faster with (level^2 + 6 * level) ...
+            getExperienceInLevels should be kept, but another helper getTotal method should be made public
+        */
+        // Get the amount of experience in all the player's levels
+        int experience = getExperienceInLevels(level);
+
+        // Get the amount of exp needed for the next level
+        int neededExp = getExperienceInLevel(level + 1);
+        // getExp returns a range of 0-1 of player's progress to the next level
+        var progress = BigDecimal.valueOf(player.getExp());
+        experience +=
+                // Multiply level progress by level total to get current exp
+                progress.multiply( BigDecimal.valueOf(neededExp) )
+                // TODO check how we should be rounding
+                // Round out any decimals
+                .setScale(0, RoundingMode.HALF_DOWN)
+                // Convert to an int for summation
+                .intValue();
+        return experience;
+    }
+
+    @Deprecated // changed signature of old method so dependencies default to new method
+    public int getTotalExperience(Player player) {
         int experience;
         int level = player.getLevel();
         if(level >= 0 && level <= 15) {
@@ -120,6 +146,7 @@ public class ExperienceManager {
         /**TEST
          *  assert getExperienceInLevel(1) == 7;
          *  assert getExperienceInLevel(30) == 107;
+         *  assert getExperienceInLevel(0) == 0;
          *  assert getExperienceInLevel(-1) == 0;
          */
     }
