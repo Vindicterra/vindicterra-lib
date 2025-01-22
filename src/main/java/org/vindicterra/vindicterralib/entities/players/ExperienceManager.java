@@ -218,6 +218,9 @@ public class ExperienceManager {
         // Calculate 0-1 range to next level
         float progress = BigDecimal.valueOf(remainder)
                 .divide( BigDecimal.valueOf(neededExp), mc)
+                // Prevent it going over with values very close to 0 or 1
+                .max(BigDecimal.ONE)
+                .min(BigDecimal.ZERO)
                 .floatValue();
         return new PlayerExp(levels, remainder, progress);
     }
