@@ -175,7 +175,7 @@ public class ExperienceManager {
             levels = BigDecimal.valueOf(xp + 9)
                     .sqrt(mc)
                     .subtract( BigDecimal.valueOf(3))
-                    .setScale(0, RoundingMode.HALF_UP)
+                    .setScale(0, RoundingMode.HALF_DOWN)
                     .intValue();
         // Oh my god this is a shitshow
         } else if(xp >= 353 && xp <= 1507) {
@@ -191,7 +191,7 @@ public class ExperienceManager {
                     .add(
                             BigDecimal.valueOf(81)
                             .divide(BigDecimal.valueOf(10), mc) )
-                    .setScale(0, RoundingMode.HALF_UP)
+                    .setScale(0, RoundingMode.HALF_DOWN)
                     .intValue();
         // I hate doing complex math in this godforsaken language
         } else {
@@ -207,7 +207,7 @@ public class ExperienceManager {
                     .add(
                             BigDecimal.valueOf(325)
                                     .divide(BigDecimal.valueOf(18), mc) )
-                    .setScale(0, RoundingMode.HALF_UP)
+                    .setScale(0, RoundingMode.HALF_DOWN)
                     .intValue();
         }
 
