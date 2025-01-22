@@ -8,6 +8,7 @@ plugin please link to this gist publicly so that others can contribute and benef
 */
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 
 import org.bukkit.entity.Player;
@@ -27,11 +28,8 @@ public class ExperienceManager {
     public int getTotalExperience() {
         int level = player.getLevel();
 
-        /* TODO this can be done faster with (level^2 + 6 * level) ...
-            getExperienceInLevels should be kept, but another helper getTotal method should be made public
-        */
         // Get the amount of experience in all the player's levels
-        int experience = getExpOfTopLevels(level);
+        int experience = getExpOfLevels(level);
 
         // Get the amount of exp needed for the next level
         int neededExp = getExpOfLevel(level + 1);
@@ -46,6 +44,16 @@ public class ExperienceManager {
                 // Convert to an int for summation
                 .intValue();
         return experience;
+    }
+
+    /**
+     * Sets the experience of the Player
+     * @param xp experience points to set
+     */
+    public void setTotalExperience(int xp) {
+        var playerExp = convertExp(xp);
+        player.setLevel(playerExp.level);
+        player.setExp(playerExp.progress);
     }
 
     @Deprecated // changed signature of old method so dependencies default to new method
@@ -73,7 +81,8 @@ public class ExperienceManager {
         }
     }
 
-    public void setTotalExperience(int xp) {
+    @Deprecated
+    public void setTotalExperience(Player player,int xp) {
         //Levels 0 through 15
         if(xp >= 0 && xp < 351) {
             //Calculate Everything
@@ -128,8 +137,79 @@ public class ExperienceManager {
     }
 
     /**
-     * Gets the amount of experience in <code>level</code>
-     * <br>
+     * A storage object that contains API-ready data about a player's levels and experience
+     */
+    // TODO Fuck you I'm not making getters and setters (right now) this is *so* much better (i'll enjoy it while I can TwT)
+    public static class PlayerExp {
+        /**
+         * The player's level
+         */
+        final int level;
+        /**
+         * The player's experience to the next level
+         */
+        final int exp;
+        /**
+         * A 0-1 range of the player's progress to the next level
+         */
+        final float progress;
+        PlayerExp(int l, int e, float p){
+            level = l;
+            exp = e;
+            progress = p;
+        }
+    }
+
+    // TODO check what precision is actually needed of MathContext
+    private static final MathContext mc = new MathContext(8);
+    /**
+     * Converts an exp value into a PlayerExp object containing level information
+     * @see PlayerExp
+     * @param xp the exp value to work off of
+     * @return A PlayerExp object with API-ready data
+     */
+    public PlayerExp convertExp(int xp) {
+        int levels;
+        if(xp >= 0 && xp <= 352) {
+
+            // sqrt(xp+9) - 3
+            levels = BigDecimal.valueOf(xp + 9)
+                    .sqrt(mc)
+                    .subtract( BigDecimal.valueOf(3))
+                    .setScale(0, RoundingMode.FLOOR)
+                    .intValue();
+
+        // TODO implement logic for higher exp levels
+        } else if(xp >= 353 && xp <= 1507) {
+            levels = 0;
+        } else {
+            levels = 0;
+        }
+
+        int remainder = xp - getExpOfLevels(levels);
+        int neededExp = getExpOfLevel(levels + 1);
+        float progress = BigDecimal.valueOf(remainder)
+                .divide( BigDecimal.valueOf(neededExp), mc)
+                .floatValue();
+        return new PlayerExp(levels, remainder, progress);
+    }
+
+    /**
+     * Deprecated compatibility method.  Use {@link #getExpOfLevel(int)} instead
+     */
+    @Deprecated
+    public static int getExperienceInLevel(int level){
+        return getExpOfLevel(level);
+    }
+
+    @Deprecated
+    public  int getExperienceInLevels(int levels){
+        return getExpOfTopLevels(levels);
+    }
+
+    /**
+     * Gets the amount of experience in <code>level</code><br>
+     * This differs from {@link #getExpOfLevels(int)} in that it only gives the exp of level <code>level</code>.<br>
      * Will return 0 when given an invalid (<=0) level
      * @param level the level you want the experience of
      * @return the amount of experience in that level
@@ -141,16 +221,41 @@ public class ExperienceManager {
             return (2 * level) + 7;
         } else if (level > 15 && level <= 30) {
             return (5 * level) - 38;
-        } else if (level > 0){ // Catch for negative values
+        } else if (level > 0){ // Catch negative values
             return (9 * level) - 158;
-        } else { // Value is negative, return zero.
-            return 0;
-        }
+        } else return 0; // Value is invalid, return zero.
         /**TEST
          *  assert getExpOfLevel(1) == 7;
          *  assert getExpOfLevel(30) == 107;
          *  assert getExpOfLevel(0) == 0;
          *  assert getExpOfLevel(-1) == 0;
+         */
+    }
+
+    /**
+     * Gets the amount of experience needed to reach level <code>level</code><br>
+     * This differs from {@link #getExpOfLevel(int)} in that it gives the amount of exp needed to reach level <code>level</code>.<br>
+     * @param level the level you want the total exp of
+     * @return the amount of experience needed to get to that level
+     */
+    public static int getExpOfLevels(int level) {
+        if (level >= 0 && level <= 16) {
+            // level^2 + 6*level
+            return (level * level) + (6 * level);
+        } else if (level >= 17 && level <= 31) {
+            // 2.5 * level^2 - 40.5 * level + 360
+            // TODO double math
+            return (int) (Math.ceil(2.5 * (level * level) ) - (40.5 * level) + 360);
+        } else if (level > 0) { // Catch negative values
+            // 4.5 * level^2 - 162.5 * level + 2200
+            // TODO more double math
+            return (int) (Math.ceil(4.5 * (level * level) ) - (162.5 * level) + 2200);
+        } else return 0; // Value is invalid, return zero.
+        /**TEST
+         *  assert getExpOfLevels(1) == 7;
+         *  assert getExpOfLevels(30) == 1395;
+         *  assert getExpOfLevels(0) == 0;
+         *  assert getExpOfLevels(-1) == 0;
          */
     }
 
