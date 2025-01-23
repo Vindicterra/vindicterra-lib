@@ -188,7 +188,9 @@ public class ExperienceManager {
     }
 
     // TODO check what precision is actually needed of MathContext
-    private static final MathContext MC = new MathContext(8);
+    private static final MathContext MC = new MathContext(10);
+    private static final MathContext MC_REDUCED = new MathContext(8);// Reduced precision for rounding
+    private static final MathContext MC_INT = new MathContext(0);
     // Constants for the experience calculation
     private static final BigDecimal THREE = new BigDecimal(3);
     private static final BigDecimal NINE = new BigDecimal(9);
