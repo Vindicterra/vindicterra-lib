@@ -312,6 +312,7 @@ public class ExperienceManager {
             return (int) (Math.ceil(4.5 * (level * level) ) - (162.5 * level) + 2220);
         } else return 0; // Value is invalid, return zero.
         /**TEST
+        /*TEST
          *  assert getExpOfLevels(1) == 7;
          *  assert getExpOfLevels(30) == 1395;
          *  assert getExpOfLevels(0) == 0;
