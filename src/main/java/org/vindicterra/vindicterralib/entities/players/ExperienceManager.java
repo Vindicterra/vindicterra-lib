@@ -12,6 +12,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 import org.bukkit.entity.Player;
+
 @SuppressWarnings("unused")
 public class ExperienceManager {
 
