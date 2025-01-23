@@ -288,13 +288,17 @@ public class ExperienceManager {
      */
     // Yes, this uses some double math; BUT, I've manually tested it with levels 0-60 and it hasn't had any trouble
     public static int getExpOfLevels(int level) {
-        if (level >= 0 && level <= 16) {
+        if (level <= 0) { //if the level is 0 or negative, return 0
+            return 0;
+        }
+        if (level <= 16) { // 0 < level <= 16
             // level^2 + 6*level
             return (level * level) + (6 * level);
-        } else if (level >= 17 && level <= 31) {
+        }
+        if (level <= 31) { // 16 < level <= 31
             // 2.5 * level^2 - 40.5 * level + 360
             return (int) (Math.ceil(2.5 * (level * level) ) - (40.5 * level) + 360);
-        } else if (level > 0) { // Catch negative values
+        } else { // 31 < level
             // 4.5 * level^2 - 162.5 * level + 2200
             return (int) (Math.ceil(4.5 * (level * level) ) - (162.5 * level) + 2220);
         } else return 0; // Value is invalid, return zero.
