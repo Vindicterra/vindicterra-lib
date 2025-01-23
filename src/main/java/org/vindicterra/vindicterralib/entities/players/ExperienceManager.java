@@ -208,37 +208,44 @@ public class ExperienceManager {
      * @return A PlayerExp object with API-ready data
      */
     public static PlayerExp convertExp(int xp) {
-        BigDecimal xpBigDecimal = new BigDecimal(xp);
-        int level;
-        if (xp < 353) { // Levels 0–16
-            // (xp + 9)^0.5 - 3
-            level = xpBigDecimal.add(NINE) // (xp + 9)
-                    .sqrt(MC) // ^0.5
-                    .subtract(THREE) // - 3
-                    .intValue();
-        } else if (xp < 1508) { // Levels 17–31
-            // ((xp - 7839/40) * 2/5)^0.5 + 81/10
-            level = xpBigDecimal.subtract(SEVENTY_EIGHT_THIRTY_NINE_OVER_FORTY) // (xp - 7839/40)
-                    .multiply(TWO_OVER_FIVE) // * 2/5
-                    .sqrt(MC) // ^0.5
-                    .add(EIGHTY_ONE_OVER_TEN) // + 81/10
-                    .intValue();
-
-        } else { // Levels 32+
-            // ((xp - 54215/72) * 2/9)^0.5 + 325/18
-            level = xpBigDecimal.subtract(FIFTY_FOUR_THOUSAND_TWO_HUNDRED_FIFTEEN_OVER_SEVENTY_TWO) // (xp - 54215/72)
-                    .multiply(TWO_OVER_NINE) // * 2/9
-                    .sqrt(MC) // ^0.5
-                    .add(THREE_HUNDRED_TWENTY_FIVE_OVER_EIGHTEEN) // + 325/18
-                    .intValue();
-        }
+        int level = getLevelFromExp(xp);
         int currentLevelExp = getExpOfLevels(level);
         int nextLevelExp = getExpOfLevels(level + 1);
         int remainder = xp - currentLevelExp;
         BigDecimal ratio = new BigDecimal(remainder)
-                .divide(new BigDecimal(nextLevelExp - currentLevelExp), MC);
+                .divide(new BigDecimal(nextLevelExp - currentLevelExp), MC).round(MC_REDUCED);
 
         return new PlayerExp(level, remainder, ratio.floatValue());
+    }
+
+    private static int getLevelFromExp(int xp) {
+        // Convert to BigDecimal for precision
+        BigDecimal xpBigDecimal = new BigDecimal(xp);
+        if (xp < 353) { // Levels 0–16
+            // (xp + 9)^0.5 - 3
+            return xpBigDecimal.add(NINE) // (xp + 9)
+                    .sqrt(MC) // ^0.5
+                    .subtract(THREE) // - 3
+                    .round(MC_INT)
+                    .intValue();
+        } else if (xp < 1508) { // Levels 17–31
+            // ((xp - 7839/40) * 2/5)^0.5 + 81/10
+            return xpBigDecimal.subtract(SEVENTY_EIGHT_THIRTY_NINE_OVER_FORTY) // (xp - 7839/40)
+                    .multiply(TWO_OVER_FIVE) // * 2/5
+                    .sqrt(MC) // ^0.5
+                    .add(EIGHTY_ONE_OVER_TEN) // + 81/10
+                    .round(MC_INT)
+                    .intValue();
+
+        } else { // Levels 32+
+            // ((xp - 54215/72) * 2/9)^0.5 + 325/18
+            return xpBigDecimal.subtract(FIFTY_FOUR_THOUSAND_TWO_HUNDRED_FIFTEEN_OVER_SEVENTY_TWO) // (xp - 54215/72)
+                    .multiply(TWO_OVER_NINE) // * 2/9
+                    .sqrt(MC) // ^0.5
+                    .add(THREE_HUNDRED_TWENTY_FIVE_OVER_EIGHTEEN) // + 325/18
+                    .round(MC_INT)
+                    .intValue();
+        }
     }
 
     /**
