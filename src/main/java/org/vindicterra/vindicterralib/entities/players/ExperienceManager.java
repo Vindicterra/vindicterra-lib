@@ -336,12 +336,6 @@ public class ExperienceManager {
      * @return The experience in the sum of <code>levels</code>
      */
     public int getExpOfTopLevels(int levels) {
-        // Kinda scuffed that this all works as normal
-//        int sum = 0;
-//        for (int i = this.player.getLevel(); i > this.player.getLevel() - levels; i--){
-//            sum += getExpOfLevel(i);
-//        }
-//        return sum;
         return getExpOfLevels(player.getLevel()) - getExpOfLevels(player.getLevel() - levels);
 
         /*TEST
