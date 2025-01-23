@@ -138,25 +138,52 @@ public class ExperienceManager {
 
     /**
      * A storage object that contains API-ready data about a player's levels and experience
+     * Class has public fields and getters the public fields may go away in the future
      */
-    // TODO Fuck you I'm not making getters and setters (right now) this is *so* much better (i'll enjoy it while I can TwT)
+    @SuppressWarnings("ALL")
     public static class PlayerExp {
         /**
          * The player's level
          */
+        @Deprecated(forRemoval = true)
         final int level;
         /**
          * The player's experience to the next level
          */
+        @Deprecated(forRemoval = true)
         final int exp;
+
         /**
          * A 0-1 range of the player's progress to the next level
          */
+        @Deprecated(forRemoval = true)
         final float progress;
+
+        /**
+         * The player's level
+         */
+        public int getLevel() {
+            return level;
+        }
+
+        /**
+         * The player's experience to the next level
+         */
+        public int getExp() {
+            return exp;
+        }
+
+        /**
+         * A 0-1 range of the player's progress to the next level
+         */
+        public float getProgress() {
+            return progress;
+        }
+
         PlayerExp(int l, int e, float p){
-            level = l;
-            exp = e;
-            progress = p;
+            this.level = l;
+            this.exp = e;
+            this.progress = p;
         }
     }
 
