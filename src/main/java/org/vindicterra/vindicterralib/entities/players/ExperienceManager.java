@@ -51,9 +51,9 @@ public class ExperienceManager {
      * @param xp experience points to set
      */
     public void setTotalExperience(int xp) {
-        var playerExp = convertExp(xp);
-        player.setLevel(playerExp.level);
-        player.setExp(playerExp.progress);
+        PlayerExp playerExp = convertExp(xp);
+        player.setLevel(playerExp.getLevel());
+        player.setExp(playerExp.getProgress());
     }
 
     @Deprecated // changed signature of old method so dependencies default to new method
