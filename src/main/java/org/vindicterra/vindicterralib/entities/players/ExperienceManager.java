@@ -40,7 +40,7 @@ public class ExperienceManager {
                 // Multiply level progress by level total to get current exp
                 progress.multiply( BigDecimal.valueOf(neededExp) )
                 // Round out any decimals
-                .setScale(0, RoundingMode.HALF_UP)
+                .round(MC_INT)
                 // Convert to an int for summation
                 .intValue();
         return experience;
