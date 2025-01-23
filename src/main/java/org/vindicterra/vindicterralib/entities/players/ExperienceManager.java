@@ -188,7 +188,17 @@ public class ExperienceManager {
     }
 
     // TODO check what precision is actually needed of MathContext
-    private static final MathContext mc = new MathContext(8);
+    private static final MathContext MC = new MathContext(8);
+    // Constants for the experience calculation
+    private static final BigDecimal THREE = new BigDecimal(3);
+    private static final BigDecimal NINE = new BigDecimal(9);
+    private static final BigDecimal TWO_OVER_FIVE = new BigDecimal(2).divide(new BigDecimal(5), MC);
+    private static final BigDecimal SEVENTY_EIGHT_THIRTY_NINE_OVER_FORTY = new BigDecimal(7839).divide(new BigDecimal(40), MC);
+    private static final BigDecimal EIGHTY_ONE_OVER_TEN = new BigDecimal(81).divide(new BigDecimal(10), MC);
+    private static final BigDecimal TWO_OVER_NINE = new BigDecimal(2).divide(NINE, MC);
+    private static final BigDecimal THREE_HUNDRED_TWENTY_FIVE_OVER_EIGHTEEN = new BigDecimal(325).divide(new BigDecimal(18), MC);
+    private static final BigDecimal FIFTY_FOUR_THOUSAND_TWO_HUNDRED_FIFTEEN_OVER_SEVENTY_TWO = new BigDecimal(54215).divide(new BigDecimal(72), MC);
+
     /**
      * Converts an exp value into a PlayerExp object containing level information
      * @see PlayerExp
