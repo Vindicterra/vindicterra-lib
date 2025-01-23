@@ -309,9 +309,8 @@ public class ExperienceManager {
             return (int) (Math.ceil(2.5 * (level * level) ) - (40.5 * level) + 360);
         } else { // 31 < level
             // 4.5 * level^2 - 162.5 * level + 2200
-            return (int) (Math.ceil(4.5 * (level * level) ) - (162.5 * level) + 2220);
-        } else return 0; // Value is invalid, return zero.
-        /**TEST
+            return (int) (Math.round(4.5 * (level * level) ) - (162.5 * level) + 2220);
+        }
         /*TEST
          *  assert getExpOfLevels(1) == 7;
          *  assert getExpOfLevels(30) == 1395;
@@ -344,6 +343,7 @@ public class ExperienceManager {
         }
         return sum;
         /**TEST
+        /*TEST
          * // Not sure how to test this, since a player is required to instantiate ExperienceManager
          * // Assume player has 30 levels for the sake of getting this onto paper
          * assert getExpOfTopLevels(1) == (107);
