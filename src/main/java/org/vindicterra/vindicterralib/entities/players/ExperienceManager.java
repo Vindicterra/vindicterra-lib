@@ -306,7 +306,7 @@ public class ExperienceManager {
         }
         if (level <= 31) { // 16 < level <= 31
             // 2.5 * level^2 - 40.5 * level + 360
-            return (int) (Math.ceil(2.5 * (level * level) ) - (40.5 * level) + 360);
+            return (int) (Math.round(2.5 * (level * level) ) - (40.5 * level) + 360);
         } else { // 31 < level
             // 4.5 * level^2 - 162.5 * level + 2200
             return (int) (Math.round(4.5 * (level * level) ) - (162.5 * level) + 2220);
@@ -337,12 +337,13 @@ public class ExperienceManager {
      */
     public int getExpOfTopLevels(int levels) {
         // Kinda scuffed that this all works as normal
-        int sum = 0;
-        for (int i = this.player.getLevel(); i > this.player.getLevel() - levels; i--){
-            sum += getExpOfLevel(i);
-        }
-        return sum;
-        /**TEST
+//        int sum = 0;
+//        for (int i = this.player.getLevel(); i > this.player.getLevel() - levels; i--){
+//            sum += getExpOfLevel(i);
+//        }
+//        return sum;
+        return getExpOfLevels(player.getLevel()) - getExpOfLevels(player.getLevel() - levels);
+
         /*TEST
          * // Not sure how to test this, since a player is required to instantiate ExperienceManager
          * // Assume player has 30 levels for the sake of getting this onto paper
