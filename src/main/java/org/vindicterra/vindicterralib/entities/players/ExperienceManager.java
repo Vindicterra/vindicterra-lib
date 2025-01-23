@@ -170,15 +170,13 @@ public class ExperienceManager {
     public static PlayerExp convertExp(int xp) {
         int levels;
         if(xp >= 0 && xp <= 352) {
-            // Quadratic formula
-            levels = BigDecimal.valueOf(xp)
-                    .multiply(BigDecimal.valueOf(4))
-                    .add(BigDecimal.valueOf(36))
+            // sqrt(xp+9) - 3
+            levels = BigDecimal.valueOf(xp + 9)
                     .sqrt(mc)
-                    .subtract(BigDecimal.valueOf(6))
-                    .divide(BigDecimal.valueOf(2), 0, RoundingMode.HALF_DOWN)
+                    .subtract( BigDecimal.valueOf(3))
+                    .setScale(0, RoundingMode.HALF_DOWN)
                     .intValue();
-            // Oh my god this is a shitshow
+        // Oh my god this is a shitshow
         } else if(xp >= 353 && xp <= 1507) {
             // 81/10 + sqrt(2/5*(xp - 7839/40))
             levels = BigDecimal.valueOf(xp)
@@ -219,9 +217,6 @@ public class ExperienceManager {
         // Calculate 0-1 range to next level
         float progress = BigDecimal.valueOf(remainder)
                 .divide( BigDecimal.valueOf(neededExp), mc)
-                // Prevent it going over with values very close to 0 or 1
-                .max(BigDecimal.ONE)
-                .min(BigDecimal.ZERO)
                 .floatValue();
         return new PlayerExp(levels, remainder, progress);
     }
