@@ -273,7 +273,7 @@ public class ExperienceManager {
      */
     public static int getExpOfLevel(int level) {
         // Get the exp of the current level, not the one after it.
-        level -= 1;
+        level--;
         if (level >= 0 && level <= 15) {
             return (2 * level) + 7;
         } else if (level > 15 && level <= 30) {
