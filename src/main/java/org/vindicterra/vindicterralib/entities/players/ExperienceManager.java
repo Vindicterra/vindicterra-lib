@@ -206,57 +206,37 @@ public class ExperienceManager {
      * @return A PlayerExp object with API-ready data
      */
     public static PlayerExp convertExp(int xp) {
-        int levels;
-        if(xp >= 0 && xp <= 352) {
-            // sqrt(xp+9) - 3
-            levels = BigDecimal.valueOf(xp + 9)
-                    .sqrt(mc)
-                    .subtract( BigDecimal.valueOf(3))
-                    .setScale(0, RoundingMode.HALF_DOWN)
+        BigDecimal xpBigDecimal = new BigDecimal(xp);
+        int level;
+        if (xp < 353) { // Levels 0–16
+            // (xp + 9)^0.5 - 3
+            level = xpBigDecimal.add(NINE) // (xp + 9)
+                    .sqrt(MC) // ^0.5
+                    .subtract(THREE) // - 3
                     .intValue();
-        // Oh my god this is a shitshow
-        } else if(xp >= 353 && xp <= 1507) {
-            // 81/10 + sqrt(2/5*(xp - 7839/40))
-            levels = BigDecimal.valueOf(xp)
-                    .subtract(
-                            BigDecimal.valueOf(7839)
-                            .divide(BigDecimal.valueOf(40), mc) )
-                    .multiply(
-                            BigDecimal.valueOf(2)
-                            .divide(BigDecimal.valueOf(5), mc) )
-                    .sqrt(mc)
-                    .add(
-                            BigDecimal.valueOf(81)
-                            .divide(BigDecimal.valueOf(10), mc) )
-                    .setScale(0, RoundingMode.HALF_DOWN)
+        } else if (xp < 1508) { // Levels 17–31
+            // ((xp - 7839/40) * 2/5)^0.5 + 81/10
+            level = xpBigDecimal.subtract(SEVENTY_EIGHT_THIRTY_NINE_OVER_FORTY) // (xp - 7839/40)
+                    .multiply(TWO_OVER_FIVE) // * 2/5
+                    .sqrt(MC) // ^0.5
+                    .add(EIGHTY_ONE_OVER_TEN) // + 81/10
                     .intValue();
-        // I hate doing complex math in this godforsaken language
-        } else {
-            // 325/18 + sqrt(2/9*(xp - 54215/72)
-            levels = BigDecimal.valueOf(xp)
-                    .subtract(
-                            BigDecimal.valueOf(54215)
-                                    .divide(BigDecimal.valueOf(72), mc) )
-                    .multiply(
-                            BigDecimal.valueOf(2)
-                                    .divide(BigDecimal.valueOf(9), mc) )
-                    .sqrt(mc)
-                    .add(
-                            BigDecimal.valueOf(325)
-                                    .divide(BigDecimal.valueOf(18), mc) )
-                    .setScale(0, RoundingMode.HALF_DOWN)
+
+        } else { // Levels 32+
+            // ((xp - 54215/72) * 2/9)^0.5 + 325/18
+            level = xpBigDecimal.subtract(FIFTY_FOUR_THOUSAND_TWO_HUNDRED_FIFTEEN_OVER_SEVENTY_TWO) // (xp - 54215/72)
+                    .multiply(TWO_OVER_NINE) // * 2/9
+                    .sqrt(MC) // ^0.5
+                    .add(THREE_HUNDRED_TWENTY_FIVE_OVER_EIGHTEEN) // + 325/18
                     .intValue();
         }
+        int currentLevelExp = getExpOfLevels(level);
+        int nextLevelExp = getExpOfLevels(level + 1);
+        int remainder = xp - currentLevelExp;
+        BigDecimal ratio = new BigDecimal(remainder)
+                .divide(new BigDecimal(nextLevelExp - currentLevelExp), MC);
 
-        // Get leftover exp points
-        int remainder = xp - getExpOfLevels(levels);
-        // Get exp needed for the next level
-        int neededExp = getExpOfLevel(levels + 1);
-        // Calculate 0-1 range to next level
-        float progress = BigDecimal.valueOf(remainder)
-                .divide( BigDecimal.valueOf(neededExp), mc)
-                .floatValue();
-        return new PlayerExp(levels, remainder, progress);
+        return new PlayerExp(level, remainder, ratio.floatValue());
     }
 
     /**
