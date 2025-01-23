@@ -281,7 +281,7 @@ public class ExperienceManager {
         } else if (level > 0){ // Catch negative values
             return (9 * level) - 158;
         } else return 0; // Value is invalid, return zero.
-        /**TEST
+        /*TEST
          *  assert getExpOfLevel(1) == 7;
          *  assert getExpOfLevel(30) == 107;
          *  assert getExpOfLevel(0) == 0;
