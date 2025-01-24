@@ -9,24 +9,18 @@ plugin please link to this gist publicly so that others can contribute and benef
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 
+import lombok.Getter;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("unused")
 public class ExperienceManager {
 
-    private final Player player;
-
-    public ExperienceManager(Player player) {
-        this.player = player;
-    }
-
     /**
      * Gets the total experience points of the Player
      * @return the player's total experience
      */
-    public int getTotalExperience() {
+    public static int getTotalExperience(Player player) {
         int level = player.getLevel();
 
         // Get the amount of experience in all the player's levels
@@ -50,135 +44,40 @@ public class ExperienceManager {
      * Sets the experience of the Player
      * @param xp experience points to set
      */
-    public void setTotalExperience(int xp) {
+    public static void setTotalExperience(Player player, int xp) {
         PlayerExp playerExp = convertExp(xp);
         player.setLevel(playerExp.getLevel());
         player.setExp(playerExp.getProgress());
-    }
-
-    @Deprecated // changed signature of old method so dependencies default to new method
-    public int getTotalExperience(Player player) {
-        int experience;
-        int level = player.getLevel();
-        if(level >= 0 && level <= 15) {
-            experience = (int) Math.ceil(Math.pow(level, 2) + (6 * level));
-            int requiredExperience = 2 * level + 7;
-            double currentExp = Double.parseDouble(Float.toString(player.getExp()));
-            experience += (int) Math.ceil(currentExp * requiredExperience);
-            return experience;
-        } else if(level > 15 && level <= 30) {
-            experience = (int) Math.ceil((2.5 * Math.pow(level, 2) - (40.5 * level) + 360));
-            int requiredExperience = 5 * level - 38;
-            double currentExp = Double.parseDouble(Float.toString(player.getExp()));
-            experience += (int) Math.ceil(currentExp * requiredExperience);
-            return experience;
-        } else {
-            experience = (int) Math.ceil(((4.5 * Math.pow(level, 2) - (162.5 * level) + 2220)));
-            int requiredExperience = 9 * level - 158;
-            double currentExp = Double.parseDouble(Float.toString(player.getExp()));
-            experience += (int) Math.ceil(currentExp * requiredExperience);
-            return experience;
-        }
-    }
-
-    @Deprecated
-    public void setTotalExperience(Player player,int xp) {
-        //Levels 0 through 15
-        if(xp >= 0 && xp < 351) {
-            //Calculate Everything
-            int a = 1; int b = 6; int c = -xp;
-            int level = (int) (-b + Math.sqrt(Math.pow(b, 2) - (4 * a * c))) / (2 * a);
-            int xpForLevel = (int) (Math.pow(level, 2) + (6 * level));
-            int remainder = xp - xpForLevel;
-            int experienceNeeded = (2 * level) + 7;
-            float experience = (float) remainder / (float) experienceNeeded;
-            experience = round(experience, 2);
-
-            //Set Everything
-            player.setLevel(level);
-            player.setExp(experience);
-            //Levels 16 through 30
-        } else if(xp >= 352 && xp < 1507) {
-            //Calculate Everything
-            double a = 2.5; double b = -40.5; int c = -xp + 360;
-            double dLevel = (-b + Math.sqrt(Math.pow(b, 2) - (4 * a * c))) / (2 * a);
-            int level = (int) Math.floor(dLevel);
-            int xpForLevel = (int) (2.5 * Math.pow(level, 2) - (40.5 * level) + 360);
-            int remainder = xp - xpForLevel;
-            int experienceNeeded = (5 * level) - 38;
-            float experience = (float) remainder / (float) experienceNeeded;
-            experience = round(experience, 2);
-
-            //Set Everything
-            player.setLevel(level);
-            player.setExp(experience);
-            //Level 31 and greater
-        } else {
-            //Calculate Everything
-            double a = 4.5; double b = -162.5; int c = -xp + 2220;
-            double dLevel = (-b + Math.sqrt(Math.pow(b, 2) - (4 * a * c))) / (2 * a);
-            int level = (int) Math.floor(dLevel);
-            int xpForLevel = (int) (4.5 * Math.pow(level, 2) - (162.5 * level) + 2220);
-            int remainder = xp - xpForLevel;
-            int experienceNeeded = (9 * level) - 158;
-            float experience = (float) remainder / (float) experienceNeeded;
-            experience = round(experience, 2);
-
-            //Set Everything
-            player.setLevel(level);
-            player.setExp(experience);
-        }
-    }
-    @SuppressWarnings("SameParameterValue")
-    private float round(float d, int decimalPlace) {
-        BigDecimal bd = new BigDecimal(Float.toString(d));
-        bd = bd.setScale(decimalPlace, RoundingMode.HALF_DOWN);
-        return bd.floatValue();
     }
 
     /**
      * A storage object that contains API-ready data about a player's levels and experience
      * Class has public fields and getters the public fields may go away in the future
      */
-    @SuppressWarnings("ALL")
+    @Getter
     public static class PlayerExp {
         /**
          * The player's level
+         * -- GETTER --
+         *  The player's level
+
          */
-        @Deprecated(forRemoval = true)
-        final int level;
+        private final int level;
         /**
          * The player's experience to the next level
+         * -- GETTER --
+         *  The player's experience to the next level
+
          */
-        @Deprecated(forRemoval = true)
-        final int exp;
+        private final int exp;
 
         /**
          * A 0-1 range of the player's progress to the next level
-         */
-        @Deprecated(forRemoval = true)
-        final float progress;
+         * -- GETTER --
+         *  A 0-1 range of the player's progress to the next level
 
-        /**
-         * The player's level
          */
-        public int getLevel() {
-            return level;
-        }
-
-        /**
-         * The player's experience to the next level
-         */
-        public int getExp() {
-            return exp;
-        }
-
-        /**
-         * A 0-1 range of the player's progress to the next level
-         */
-        public float getProgress() {
-            return progress;
-        }
+        private final float progress;
 
         PlayerExp(int l, int e, float p){
             this.level = l;
@@ -249,22 +148,6 @@ public class ExperienceManager {
     }
 
     /**
-     * Deprecated compatibility method.  Use {@link #getExpOfLevel(int)} instead
-     */
-    @Deprecated
-    public static int getExperienceInLevel(int level){
-        return getExpOfLevel(level);
-    }
-
-    /**
-     * Deprecated compatibility method.  Use {@link #getExpOfTopLevels(int)} instead
-     */
-    @Deprecated
-    public int getExperienceInLevels(int levels){
-        return getExpOfTopLevels(levels);
-    }
-
-    /**
      * Gets the amount of experience in <code>level</code><br>
      * This differs from {@link #getExpOfLevels(int)} in that it only gives the exp of level <code>level</code>.<br>
      * Will return 0 when given an invalid (<=0) level
@@ -324,7 +207,7 @@ public class ExperienceManager {
      * <br>
      * This method has an O(n) time complexity.
      * <br>
-     * If you want the total experience of the player, use {@link #getTotalExperience()}
+     * If you want the total experience of the player, use {@link #getTotalExperience(Player)}}
      * <br>
      * <br>
      * I.e. Player has 30 levels and an additional 5 experience points.
@@ -335,7 +218,7 @@ public class ExperienceManager {
      * @param levels The number of levels to get the total experience of
      * @return The experience in the sum of <code>levels</code>
      */
-    public int getExpOfTopLevels(int levels) {
+    public static int getExpOfTopLevels(Player player, int levels) {
         return getExpOfLevels(player.getLevel()) - getExpOfLevels(player.getLevel() - levels);
 
         /*TEST
