@@ -1,11 +1,4 @@
 package org.vindicterra.vindicterralib.entities.players;
-/*
-AUTHOR: Dev_Richard (https://www.spigotmc.org/members/dev_richard.38792/)
-DESC: A simple and easy to use class that can get and set a player's total experience points.
-
-Feel free to use this class in both public and private plugins, however if you release your
-plugin please link to this gist publicly so that others can contribute and benefit from it.
-*/
 
 import java.math.BigDecimal;
 import java.math.MathContext;
