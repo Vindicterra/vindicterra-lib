@@ -1,6 +1,11 @@
 package org.vindicterra.vindicterralib.utils;
 
+/**
+ * @deprecated
+ * This class is now obsolete since Java 21 adds {@link Math#clamp(long, int, int)}
+ */
 @SuppressWarnings("unused")
+@Deprecated
 public class MathUtils {
     /**
      * Clamps a value between a minimum and maximum value

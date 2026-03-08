@@ -21,8 +21,7 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings("ALL")
 public class StringUtils {
-
-
+    
     public static final Pattern PATTERN = Pattern.compile("\\p{Alnum}+");
     private static final Pattern HEX_PATTERN = Pattern.compile("&#[a-fA-F0-9]{6}");
     static Map<String, String[]> words = new HashMap<>();
