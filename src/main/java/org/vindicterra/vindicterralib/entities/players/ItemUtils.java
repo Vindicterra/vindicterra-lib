@@ -1,6 +1,7 @@
 package org.vindicterra.vindicterralib.entities.players;
 
-import dev.lone.itemsadder.api.CustomStack;
+import net.momirealms.craftengine.bukkit.api.CraftEngineItems;
+import net.momirealms.craftengine.core.item.CustomItem;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -72,18 +73,18 @@ public class ItemUtils {
             return ItemRemoveResult.SUCCESS;
         }
         
-        CustomStack stack = CustomStack.byItemStack(item);
-        if (stack == null) return ItemRemoveResult.FAIL;
+        CustomItem<ItemStack> customItem = CraftEngineItems.byItemStack(item);
+        if (customItem == null) return ItemRemoveResult.FAIL;
         
         boolean match = false;
         int total = 0;
         for (ItemStack invItem : player.getInventory().getStorageContents()) {
             if (invItem == null) continue;
             
-            CustomStack invCStack = CustomStack.byItemStack(invItem);
+            CustomItem<ItemStack> invCStack = CraftEngineItems.byItemStack(invItem);
             if (invCStack == null) continue;
             
-            if (!invCStack.getNamespacedID().equalsIgnoreCase(stack.getNamespacedID())) continue;
+            if (!invCStack.id().namespace().equalsIgnoreCase(customItem.id().namespace())) continue;
             
             match = true;
             total += invItem.getAmount();
@@ -92,11 +93,11 @@ public class ItemUtils {
         if (!match) {
             return ItemRemoveResult.FAIL;
         }
-        if (total < stack.getItemStack().getAmount()) {
+        if (total < customItem.buildItemStack().getAmount()) {
             return ItemRemoveResult.INVALID_AMOUNT;
         }
         
-        player.getInventory().removeItem(stack.getItemStack());
+        player.getInventory().removeItem(customItem.buildItemStack());
         return ItemRemoveResult.SUCCESS;
     }
 }
