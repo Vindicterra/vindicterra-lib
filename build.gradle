@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'net.vindicterra'
-version = '0.2.3-dev'
+version = '0.3.0-dev'
 
 mavenPublishing {
     publishToMavenCentral(true, false)
@@ -27,11 +27,12 @@ mavenPublishing {
         developers {
             developer {
                 name.set("Shradinx")
-                email.set("luphcore@gmail.com")
             }
             developer {
                 name.set("bearofbusiness")
-                email.set("")
+            }
+            developer {
+                name.set("TheSmimg")
             }
         }
 
