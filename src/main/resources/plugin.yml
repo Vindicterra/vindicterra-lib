@@ -1,6 +1,6 @@
 name: VindicterraLib
 version: '$version'
-main: org.vindicterra.vindicterralib.VindicterraLib
+main: net.vindicterra.vindicterralib.VindicterraLib
 api-version: '1.21'
 load: STARTUP
 description: Vindicterra Standard Library
