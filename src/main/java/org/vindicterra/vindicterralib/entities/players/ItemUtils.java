@@ -30,7 +30,7 @@ public class ItemUtils {
             return ItemRemoveResult.INVALID_AMOUNT;
         }
         
-        player.getInventory().removeItem(new ItemStack(material, amount));
+        player.getInventory().removeItemAnySlot(new ItemStack(material, amount));
         return ItemRemoveResult.SUCCESS;
     }
     
@@ -64,7 +64,7 @@ public class ItemUtils {
             return ItemRemoveResult.INVALID_AMOUNT;
         }
         
-        player.getInventory().removeItem(item);
+        player.getInventory().removeItemAnySlot(item);
         return ItemRemoveResult.SUCCESS;
     }
     
@@ -84,7 +84,7 @@ public class ItemUtils {
             CustomItem<ItemStack> invCStack = CraftEngineItems.byItemStack(invItem);
             if (invCStack == null) continue;
             
-            if (!invCStack.id().namespace().equalsIgnoreCase(customItem.id().namespace())) continue;
+            if (!invCStack.id().equals(customItem.id())) continue;
             
             match = true;
             total += invItem.getAmount();
@@ -93,11 +93,13 @@ public class ItemUtils {
         if (!match) {
             return ItemRemoveResult.FAIL;
         }
-        if (total < customItem.buildItemStack().getAmount()) {
+        if (total < item.getAmount()) {
             return ItemRemoveResult.INVALID_AMOUNT;
         }
         
-        player.getInventory().removeItem(customItem.buildItemStack());
+        ItemStack removal = customItem.buildItemStack(item.getAmount());
+        
+        player.getInventory().removeItemAnySlot(removal);
         return ItemRemoveResult.SUCCESS;
     }
 }
