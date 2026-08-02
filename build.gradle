@@ -5,19 +5,13 @@ plugins {
 }
 
 group = 'org.vindicterra'
-version = '0.2.2-dev'
+version = '0.2.3-dev'
 
 publishing {
-    publications {
-        pluginPublication(MavenPublication) {
-            artifactId = 'vindicterra-lib'
-            from components.java
-        }
-    }
     repositories {
         maven {
-            name = "GithubPackages"
-            url = uri("https://maven.pkg.github.com/Vindicterra/VindicterraLib")
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Vindicterra/vindicterra-lib")
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
