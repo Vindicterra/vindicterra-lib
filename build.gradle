@@ -1,24 +1,69 @@
 plugins {
     id 'java'
-    id 'maven-publish'
+    id "com.vanniktech.maven.publish" version "0.37.0"
     id 'com.gradleup.shadow' version '9.3.1'
 }
 
-group = 'org.vindicterra'
+group = 'net.vindicterra'
 version = '0.2.3-dev'
 
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/Vindicterra/vindicterra-lib")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+mavenPublishing {
+    publishToMavenCentral(true, false)
+    signAllPublications()
+
+    coordinates(project.group.toString(), project.name, project.version.toString())
+    pom {
+        name.set("${project.group}:${project.name}")
+        description.set("Core library for all Vindicterra plugins")
+        url.set("play.vindicterra.net")
+
+        licenses {
+            license {
+                name.set("GNU GPL-3.0 License")
+                url.set("https://www.gnu.org/licenses/gpl-3.0.en.html")
             }
+        }
+
+        developers {
+            developer {
+                name.set("Shradinx")
+                email.set("luphcore@gmail.com")
+            }
+            developer {
+                name.set("bearofbusiness")
+                email.set("")
+            }
+        }
+
+        scm {
+            url.set("https://github.com/Vindicterra/vindicterra-lib")
+            connection.set("scm:git:git://github.com/Vindicterra/vindicterra-lib")
+            developerConnection.set("scm:git:ssh://git@github.com:Vindicterra/vindicterra-lib.git")
         }
     }
 }
+
+//publishing {
+//    publications {
+//        mavenJava(MavenPublication) {
+//            from components.java
+//
+//            groupId = project.group
+//            artifactId = project.name
+//            version = project.version
+//        }
+//    }
+//    repositories {
+//        maven {
+//            name = "MavenCentral"
+//            url = uri("https://maven.pkg.github.com/Vindicterra/vindicterra-lib")
+//            credentials {
+//                username = System.getenv("GITHUB_ACTOR")
+//                password = System.getenv("GITHUB_TOKEN")
+//            }
+//        }
+//    }
+//}
 
 repositories {
     mavenCentral()
