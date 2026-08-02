@@ -18,6 +18,7 @@ on:
 jobs:
   build:
     runs-on: self-hosted
+    environment: mavencentral
     permissions:
       contents: write
       pull-requests: read
@@ -30,6 +31,11 @@ jobs:
         with:
           java-version: 21
           distribution: 'temurin'
+          server-id: 'mavencentral'
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
       # Configure Gradle for optimal use in GiHub Actions, including caching of downloaded dependencies.
       # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
@@ -51,3 +57,10 @@ jobs:
           title: "Automatic Latest Build"
           files: |
             build/libs/*.jar
+
+      - name: Publish package
+        run: ./gradlew publishToMavenCentral
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
