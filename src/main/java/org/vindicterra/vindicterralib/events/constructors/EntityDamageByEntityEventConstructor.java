@@ -1,12 +1,14 @@
 package org.vindicterra.vindicterralib.events.constructors;
 
 import com.google.common.base.Functions;
-import com.google.common.collect.ImmutableMap;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class EntityDamageByEntityEventConstructor {
     @SuppressWarnings({"deprecation", "UnstableApiUsage"})
@@ -20,8 +22,8 @@ public class EntityDamageByEntityEventConstructor {
     ) {
         return new EntityDamageByEntityEvent(
                 damager, damagee, damageCause, damageSource,
-                ImmutableMap.of(EntityDamageEvent.DamageModifier.BASE, damage),
-                ImmutableMap.of(EntityDamageEvent.DamageModifier.BASE, Functions.constant(-0.0)),
+                new HashMap<>(Map.of(EntityDamageEvent.DamageModifier.BASE, damage)),
+                new HashMap<>(Map.of(EntityDamageEvent.DamageModifier.BASE, Functions.constant(1.0))),
                 isCritical
         );
     }
